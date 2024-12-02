@@ -1,4 +1,4 @@
-package day2.part1;
+package day2.part2;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -12,8 +12,6 @@ public class Res {
         Scanner scan = new Scanner(fr);
         String line;
         ArrayList<int[]> numbers = new ArrayList<>();
-
-
         int res = 0;
 
         //read lines
@@ -23,8 +21,21 @@ public class Res {
         }
 
         for (int[] el: numbers) {
-            if (Verify(el))
+            if (Verify(el)) {
                 res++;
+            }  else {
+                boolean safe = false;
+                for (int i = 0; i < el.length; i++) {
+                    int[] modifiedArray = removeElement(el, i);
+                    if (Verify(modifiedArray)) {
+                        safe = true;
+                        break;
+                    }
+                }
+                if (safe) {
+                    res++;
+                }
+            }
         }
         System.out.println(res);
         //close file
@@ -32,29 +43,20 @@ public class Res {
     }
 
     public static boolean Verify(int[] el) {
-        boolean increasing;
-        increasing = el[0] < el[1];
-        for (int i = 0; i < el.length-1; i++) {
-            if ((increasing && el[i] > el[i+1]) || (!increasing && el[i] < el[i+1])) {
-                return false;
+        return day2.part1.Res.Verify(el);
+    }
+
+    public static int[] removeElement(int[] array, int indexToRemove) {
+        int[] newArray = new int[array.length - 1];
+        for (int i = 0, j = 0; i < array.length; i++) {
+            if (i != indexToRemove) {
+                newArray[j++] = array[i];
             }
-            if (increasing && (el[i+1] - el[i] > 3)) {
-                return false;
-            }
-            if (!increasing && (el[i] - el[i+1] > 3)) {
-                return false;
-            }
-            if (el[i] == el[i+1])
-                return false;
         }
-        return true;
+        return newArray;
     }
 
     public static int[] StringArrToIntArr(String[] s) {
-        int[] result = new int[s.length];
-        for (int i = 0; i < s.length; i++) {
-            result[i] = Integer.parseInt(s[i]);
-        }
-        return result;
+        return day2.part1.Res.StringArrToIntArr(s);
     }
 }
