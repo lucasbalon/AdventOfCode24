@@ -22,6 +22,7 @@ public class Res {
             i++;
         }
 
+        //oups
         for (int y = 0; y < tab.length; ++y) {
             for (int x = 0; x < tab[y].length; ++x) {
                 System.out.print(tab[y][x]);
