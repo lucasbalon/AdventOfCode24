@@ -1,4 +1,4 @@
-package day4.part1;
+package day4.part2;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class Res {
 
         for (int y = 0; y < tab.length; ++y) {
             for (int x = 0; x < tab[y].length; ++x) {
-                if (tab[y][x] == 'X') {
+                if (tab[y][x] == 'A') {
                     res += find(tab, x, y);
                 }
             }
@@ -34,30 +34,26 @@ public class Res {
         System.out.println(res);
     }
 
-    public static int find(char[][] tab, int startX, int startY) {
-        int[][] directions = {
-                {0, 1},
-                {0, -1},
-                {1, 0},
-                {-1, 0},
-                {1, 1},
-                {1, -1},
-                {-1, 1},
-                {-1, -1}
-        };
+    public static int find(char[][] tab, int X, int Y) {
+        int[][][] patterns = {
+                {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}},
+                {{-1, -1}, {1, -1}, {-1, 1}, {1, 1}},
+                {{1, -1}, {1, 1}, {-1, -1}, {-1, 1}},
+                {{-1, 1}, {1, 1}, {-1, -1}, {1, -1}},
+        }; // too low ??
 
-        int count = 0;
         int rows = tab.length;
         int cols = tab[0].length;
-        String xmas = "XMAS";
+        int count = 0;
 
-
-        for (int[] dir : directions) {
+        for (int[][] pattern : patterns) {
             boolean match = true;
-            for (int k = 0; k < 4; k++) {
-                int newX = startX + k * dir[1];
-                int newY = startY + k * dir[0];
-                if (newX < 0 || newX >= cols || newY < 0 || newY >= rows || tab[newY][newX] != xmas.charAt(k)) {
+            for (int i = 0; i < pattern.length; i++) {
+                int newX = X + pattern[i][1];
+                int newY = Y + pattern[i][0];
+                char expectedChar = (i < 2) ? 'M' : 'S';
+
+                if (newX < 0 || newX >= cols || newY < 0 || newY >= rows || tab[newY][newX] != expectedChar) {
                     match = false;
                     break;
                 }
@@ -66,6 +62,7 @@ public class Res {
                 count++;
             }
         }
+
         return count;
     }
 }
